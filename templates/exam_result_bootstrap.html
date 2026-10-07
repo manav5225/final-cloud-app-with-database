@@ -1,0 +1,53 @@
+
+{% extends "base.html" %}
+{% block title %}Exam Result{% endblock %}
+
+{% block content %}
+<div class="card shadow text-center mb-4">
+    <div class="card-body p-5">
+        {% if grade >= 70 %}
+        <div class="alert alert-success">
+            <h1>Congratulations!</h1>
+            <p class="lead">You have successfully completed the exam.</p>
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+            <h1>Exam Completed</h1>
+            <p class="lead">Keep practicing and try again.</p>
+        </div>
+        {% endif %}
+
+        <h2>{{ course.name }}</h2>
+        <div class="display-5 fw-bold my-3">
+            {{ submission.score }} / {{ possible }}
+        </div>
+        <p class="fs-4">Score: {{ grade }}%</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Exam Results</h3>
+    </div>
+    <div class="card-body">
+        {% for item in result_items %}
+        <div class="border rounded p-3 mb-3">
+            <h5>Question {{ forloop.counter }}</h5>
+            <p class="mb-2"><strong>{{ item.question.text }}</strong></p>
+            <p class="mb-1 text-success"><strong>Correct answer:</strong></p>
+            <ul class="mb-0">
+                {% for choice in item.correct_choices %}
+                <li>{{ choice.text }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% empty %}
+        <p>No questions were configured for this exam.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<a href="{% url 'course_details' course.id %}" class="btn btn-primary mt-3">
+    Return to Course
+</a>
+{% endblock %}
